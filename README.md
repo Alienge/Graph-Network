@@ -1,5 +1,6 @@
 # Graph-Network
 GAT and GCN code
 
-# environment
-pytorch == 1.3.0 or plus
+# Environment
+pytorch == 0.4.0 or plus
+
