@@ -38,7 +38,8 @@ def load_data(path = "./data/cora",dataset="cora"):
                         dtype=np.float32)
     #print(adj)
     # keep symmetric
-    adj = adj + np.multiply(adj.T,adj.T > adj) - np.multiply(adj,adj.T > adj)
+    adj = adj + adj.T.multiply(adj.T > adj) - adj.multiply(adj.T > adj)
+    #adj = adj + np.multiply(adj.T,adj.T > adj) - np.multiply(adj,adj.T > adj)
 
     features = normalize(features)
     # D-1AD-1
@@ -78,7 +79,7 @@ def sparse_mx_to_torch_sparse_tensor(sparse_mx):
     shape = torch.Size(sparse_mx.shape)
     return torch.sparse.FloatTensor(indices,values,shape)
 
-def accuray(output,labels):
+def accuracy(output,labels):
     preds = output.max(1)[1].type_as(labels)
     correct = preds.eq(labels).double()
     correct = correct.sum()

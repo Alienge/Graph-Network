@@ -13,7 +13,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.autograd import Variable
 
-from utils import load_data, accuray
+from utils import load_data, accuracy
 from model import GAT
 
 # Training settings
@@ -73,7 +73,7 @@ def train(epoches):
     optimizer.zero_grad()
     output = model(features,adj)
     loss_train = F.nll_loss(output[idx_train],labels[idx_train])
-    acc_train = accuray(output[idx_train],labels[idx_train])
+    acc_train = accuracy(output[idx_train],labels[idx_train])
     loss_train.backward()
     optimizer.step()
     if not args.fastmode:
@@ -83,7 +83,7 @@ def train(epoches):
         output = model(features, adj)
 
     loss_val = F.nll_loss(output[idx_val], labels[idx_val])
-    acc_val = accuray(output[idx_val], labels[idx_val])
+    acc_val = accuracy(output[idx_val], labels[idx_val])
     print('Epoch: {:04d}'.format(epoches + 1),
           'loss_train: {:.4f}'.format(loss_train.data.item()),
           'acc_train: {:.4f}'.format(acc_train.data.item()),
@@ -97,7 +97,7 @@ def test():
     model.eval()
     output = model(features, adj)
     loss_test = F.nll_loss(output[idx_test], labels[idx_test])
-    acc_test = accuray(output[idx_test], labels[idx_test])
+    acc_test = accuracy(output[idx_test], labels[idx_test])
     print("Test set results:",
           "loss= {:.4f}".format(loss_test.item()),
           "accuracy= {:.4f}".format(acc_test.item()))

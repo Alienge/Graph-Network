@@ -72,7 +72,7 @@ def train(epoch):
     optimizer.zero_grad()
     output = model(features,adj)
     loss_train = F.nll_loss(output[idx_train],labels[idx_train])
-    acc_train = accuray(output[idx_train],labels[idx_train])
+    acc_train = accuracy(output[idx_train],labels[idx_train])
     loss_train.backward()
     optimizer.step()
     if not args.fastmode:
@@ -81,7 +81,7 @@ def train(epoch):
         model.eval()
         output = model(features, adj)
     loss_val = F.nll_loss(output[idx_val], labels[idx_val])
-    acc_val = accuray(output[idx_val], labels[idx_val])
+    acc_val = accuracy(output[idx_val], labels[idx_val])
     print('Epoch: {:04d}'.format(epoch + 1),
           'loss_train: {:.4f}'.format(loss_train.item()),
           'acc_train: {:.4f}'.format(acc_train.item()),
@@ -93,7 +93,7 @@ def test():
     model.eval()
     output = model(features, adj)
     loss_test = F.nll_loss(output[idx_test], labels[idx_test])
-    acc_test = accuray(output[idx_test], labels[idx_test])
+    acc_test = accuracy(output[idx_test], labels[idx_test])
     print("Test set results:",
           "loss= {:.4f}".format(loss_test.item()),
           "accuracy= {:.4f}".format(acc_test.item()))
@@ -107,8 +107,3 @@ print("Total time elapsed: {:.4f}s".format(time.time() - t_total))
 # Testing
 test()
 #===========================一点点想法==================================================
-'''
-在进行训练的时候其实是对整体的epoch进行训练的，这样是否把数据全局平均化了，这个时候
-是否可以考虑局部平均化类似一个batch——size的更新，我们考虑选区采样的结构，只能新一部分的theta，
-这种想法是否可行，另外GCN在估计G(theta)的时候是否过于理想化，能否进行改进一个更理想的矩阵
-'''
